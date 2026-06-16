@@ -12,9 +12,9 @@ export default function Hero({ data }) {
             {data.eyebrow}
           </div>
           
-          <div className="flex items-center gap-6 mb-4 max-[680px]:flex-col max-[680px]:items-start">
+          <div className="flex items-center gap-6 mb-4 max-[480px]:gap-3">
             {data.profileImg && (
-              <div className="w-[120px] h-[120px] rounded-full border-2 border-accent overflow-hidden shrink-0 shadow-custom max-[680px]:w-[100px] max-[680px]:h-[100px]">
+              <div className="w-[120px] h-[120px] rounded-full border-2 border-accent overflow-hidden shrink-0 shadow-custom max-[680px]:w-[80px] max-[680px]:h-[80px] max-[480px]:w-[60px] max-[480px]:h-[60px]">
                 <img
                   src={data.profileImg}
                   alt={data.name}
@@ -22,7 +22,7 @@ export default function Hero({ data }) {
                 />
               </div>
             )}
-            <h1 className="font-heading text-[clamp(2rem,4.8vw,3.5rem)] font-bold leading-[1.1] tracking-[-0.02em] text-text-custom max-[680px]:text-[2.2rem] m-0 whitespace-nowrap">
+            <h1 className="font-heading text-[clamp(2rem,4.8vw,3.5rem)] font-bold leading-[1.1] tracking-[-0.02em] text-text-custom max-[680px]:text-[clamp(1.4rem,5.5vw,2.2rem)] m-0 whitespace-nowrap">
               {data.name}
             </h1>
           </div>
