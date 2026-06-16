@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  --bg: #F8FAFC;
+  --bg2: #FFFFFF;
+  --bg3: #F1F5F9;
+  --border: #E2E8F0;
+  --text: #0F172A;
+  --text-muted: #64748B;
+  --accent: #2563EB;
+  --accent2: #3B82F6;
+  --card-bg: #FFFFFF;
+  --nav-bg: rgba(248, 250, 252, 0.85);
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --tag-bg: rgba(37,99,235,0.08);
+  --tag-text: #2563EB;
+
+  --sans: 'Inter', sans-serif;
+  --heading: 'Space Grotesk', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme="dark"] {
+  --bg: #0D1117;
+  --bg2: #161B22;
+  --bg3: #1C2333;
+  --border: #21262D;
+  --text: #E6EDF3;
+  --text-muted: #7D8590;
+  --accent: #4F9CF9;
+  --accent2: #58A6FF;
+  --card-bg: #161B22;
+  --nav-bg: rgba(13,17,23,0.85);
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --tag-bg: rgba(79,156,249,0.12);
+  --tag-text: #58A6FF;
+}
+
+@theme {
+  --font-sans: var(--sans);
+  --font-heading: var(--heading);
+  --font-mono: var(--mono);
+
+  --color-bg: var(--bg);
+  --color-bg2: var(--bg2);
+  --color-bg3: var(--bg3);
+  --color-border-custom: var(--border);
+  --color-text-custom: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent2: var(--accent2);
+  --color-card-bg: var(--card-bg);
+  --color-nav-bg: var(--nav-bg);
+  --color-tag-bg: var(--tag-bg);
+  --color-tag-text: var(--tag-text);
+
+  --shadow-custom: var(--shadow);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.7;
+  transition: background-color 0.3s, color 0.3s;
+  overflow-x: hidden;
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
