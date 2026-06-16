@@ -2,7 +2,7 @@ export default function Navbar({ theme, onToggleTheme }) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-[100] bg-nav-bg backdrop-blur-[12px] border-b border-border-custom px-8 h-[60px] flex items-center justify-between transition-colors duration-300">
       <span className="font-mono text-[0.9rem] text-accent tracking-[0.05em]">
-        mizael
+        mizaeltangkas
       </span>
       <ul className="flex items-center gap-8 list-none max-[680px]:hidden">
         <li>
