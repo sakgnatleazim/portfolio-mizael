@@ -6,11 +6,12 @@ import Skills from './components/Skills'
 import Projects from './components/Projects'
 import Activities from './components/Activities'
 import Organizations from './components/Organizations'
+import Certificates from './components/Certificates'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 import AdminPanel from './components/AdminPanel'
 import AdminLogin from './components/AdminLogin'
-import { defaultPortfolioData } from './data/defaultPortfolioData'
+import { defaultPortfolioData, normalizePortfolioData } from './data/defaultPortfolioData'
 import { supabase } from './supabaseClient'
 
 export default function App() {
@@ -18,12 +19,17 @@ export default function App() {
     return localStorage.getItem('theme') || 'dark'
   })
 
+  // Language state: 'id' or 'en'
+  const [lang, setLang] = useState(() => {
+    return localStorage.getItem('lang') || 'id'
+  })
+
   // Load from localStorage first, then sync with Supabase
   const [portfolioData, setPortfolioData] = useState(() => {
     const saved = localStorage.getItem('portfolio_data')
     if (saved) {
       try {
-        return JSON.parse(saved)
+        return normalizePortfolioData(JSON.parse(saved))
       } catch (e) {
         console.error('Failed to parse local portfolio data:', e)
       }
@@ -45,15 +51,24 @@ export default function App() {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
   }
 
+  const toggleLang = () => {
+    setLang((prev) => {
+      const next = prev === 'id' ? 'en' : 'id'
+      localStorage.setItem('lang', next)
+      return next
+    })
+  }
+
   const handleSaveData = async (newData) => {
-    setPortfolioData(newData)
-    localStorage.setItem('portfolio_data', JSON.stringify(newData))
+    const normalized = normalizePortfolioData(newData)
+    setPortfolioData(normalized)
+    localStorage.setItem('portfolio_data', JSON.stringify(normalized))
 
     if (supabase) {
       try {
         const { error } = await supabase
           .from('portfolio')
-          .upsert({ id: 1, data: newData, updated_at: new Date() })
+          .upsert({ id: 1, data: normalized, updated_at: new Date() })
 
         if (error) {
           console.error('Gagal menyimpan ke Supabase:', error)
@@ -116,8 +131,9 @@ export default function App() {
           .single()
 
         if (data && data.data) {
-          setPortfolioData(data.data)
-          localStorage.setItem('portfolio_data', JSON.stringify(data.data))
+          const normalized = normalizePortfolioData(data.data)
+          setPortfolioData(normalized)
+          localStorage.setItem('portfolio_data', JSON.stringify(normalized))
         } else if (error && error.code === 'PGRST116') {
           // Row doesn't exist yet, upsert default
           console.log('Data tidak ditemukan di Supabase, meng-upsert default data...')
@@ -179,6 +195,71 @@ export default function App() {
     )
   }
 
+  // Translate data for rendering on the frontend
+  const translatedHero = portfolioData.hero ? {
+    ...portfolioData.hero,
+    eyebrow: portfolioData.hero[`eyebrow_${lang}`] || portfolioData.hero.eyebrow_id || portfolioData.hero.eyebrow || '',
+    title: portfolioData.hero[`title_${lang}`] || portfolioData.hero.title_id || portfolioData.hero.title || '',
+    desc: portfolioData.hero[`desc_${lang}`] || portfolioData.hero.desc_id || portfolioData.hero.desc || '',
+    ctaPrimaryText: portfolioData.hero[`ctaPrimaryText_${lang}`] || portfolioData.hero.ctaPrimaryText_id || portfolioData.hero.ctaPrimaryText || '',
+    ctaOutlineText: portfolioData.hero[`ctaOutlineText_${lang}`] || portfolioData.hero.ctaOutlineText_id || portfolioData.hero.ctaOutlineText || ''
+  } : {}
+
+  const translatedAbout = portfolioData.about ? {
+    ...portfolioData.about,
+    title: portfolioData.about[`title_${lang}`] || portfolioData.about.title_id || portfolioData.about.title || '',
+    text1: portfolioData.about[`text1_${lang}`] || portfolioData.about.text1_id || portfolioData.about.text1 || '',
+    text2: portfolioData.about[`text2_${lang}`] || portfolioData.about.text2_id || portfolioData.about.text2 || '',
+    text3: portfolioData.about[`text3_${lang}`] || portfolioData.about.text3_id || portfolioData.about.text3 || '',
+    details: Array.isArray(portfolioData.about.details) ? portfolioData.about.details.map(d => ({
+      ...d,
+      label: d[`label_${lang}`] || d.label_id || d.label || '',
+      value: d[`value_${lang}`] || d.value_id || d.value || ''
+    })) : []
+  } : {}
+
+  const translatedSkills = Array.isArray(portfolioData.skills) ? portfolioData.skills.map(s => ({
+    ...s,
+    level: s[`level_${lang}`] || s.level_id || s.level || ''
+  })) : []
+
+  const translatedProjects = Array.isArray(portfolioData.projects) ? portfolioData.projects.map(p => ({
+    ...p,
+    type: p[`type_${lang}`] || p.type_id || p.type || '',
+    name: p[`name_${lang}`] || p.name_id || p.name || '',
+    desc: p[`desc_${lang}`] || p.desc_id || p.desc || ''
+  })) : []
+
+  const translatedActivities = Array.isArray(portfolioData.activities) ? portfolioData.activities.map(a => ({
+    ...a,
+    title: a[`title_${lang}`] || a.title_id || a.title || '',
+    desc: a[`desc_${lang}`] || a.desc_id || a.desc || ''
+  })) : []
+
+  const translatedOrganizations = Array.isArray(portfolioData.organizations) ? portfolioData.organizations.map(o => ({
+    ...o,
+    name: o[`name_${lang}`] || o.name_id || o.name || '',
+    role: o[`role_${lang}`] || o.role_id || o.role || '',
+    desc: o[`desc_${lang}`] || o.desc_id || o.desc || ''
+  })) : []
+
+  const translatedCertificates = Array.isArray(portfolioData.certificates) ? portfolioData.certificates.map(c => ({
+    ...c,
+    title: c[`title_${lang}`] || c.title_id || c.title || '',
+    issuer: c[`issuer_${lang}`] || c.issuer_id || c.issuer || ''
+  })) : []
+
+  const translatedContact = portfolioData.contact ? {
+    ...portfolioData.contact,
+    title: portfolioData.contact[`title_${lang}`] || portfolioData.contact.title_id || portfolioData.contact.title || '',
+    sub: portfolioData.contact[`sub_${lang}`] || portfolioData.contact.sub_id || portfolioData.contact.sub || ''
+  } : {}
+
+  const translatedFooter = portfolioData.footer ? {
+    ...portfolioData.footer,
+    text: portfolioData.footer[`text_${lang}`] || portfolioData.footer.text_id || portfolioData.footer.text || ''
+  } : {}
+
   // Route: /admin
   if (route === '/admin') {
     if (isAuthenticated) {
@@ -198,15 +279,16 @@ export default function App() {
   // Route: / (Homepage)
   return (
     <>
-      <Navbar theme={theme} onToggleTheme={toggleTheme} />
-      <Hero data={portfolioData.hero} />
-      <About data={portfolioData.about} />
-      <Skills data={portfolioData.skills} />
-      <Projects data={portfolioData.projects} />
-      <Activities data={portfolioData.activities} />
-      <Organizations data={portfolioData.organizations} />
-      <Contact data={portfolioData.contact} />
-      <Footer data={portfolioData.footer} />
+      <Navbar theme={theme} onToggleTheme={toggleTheme} lang={lang} onToggleLang={toggleLang} />
+      <Hero data={translatedHero} />
+      <About data={translatedAbout} />
+      <Skills data={translatedSkills} />
+      <Projects data={translatedProjects} lang={lang} />
+      <Activities data={translatedActivities} />
+      <Organizations data={translatedOrganizations} />
+      <Certificates data={translatedCertificates} lang={lang} />
+      <Contact data={translatedContact} lang={lang} />
+      <Footer data={translatedFooter} />
     </>
   )
 }

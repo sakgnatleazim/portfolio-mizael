@@ -1,4 +1,4 @@
-export default function Projects({ data }) {
+export default function Projects({ data, lang }) {
   if (!data) return null
 
   return (
@@ -10,7 +10,7 @@ export default function Projects({ data }) {
             // projects
           </p>
           <h2 className="font-heading text-[clamp(1.6rem,3vw,2.2rem)] font-bold tracking-[-0.02em] text-text-custom mb-12">
-            Project
+            {lang === 'en' ? 'Projects' : 'Proyek'}
           </h2>
         </div>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-5 fade-in">
@@ -53,7 +53,9 @@ export default function Projects({ data }) {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {project.isPaper ? 'Lihat Paper' : 'Lihat Project'} →
+                  {project.isPaper
+                    ? (lang === 'en' ? 'View Paper' : 'Lihat Paper')
+                    : (lang === 'en' ? 'View Project' : 'Lihat Project')} →
                 </a>
               </div>
             )

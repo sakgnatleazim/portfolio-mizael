@@ -1,4 +1,4 @@
-export default function Contact({ data }) {
+export default function Contact({ data, lang }) {
   if (!data) return null
 
   return (
@@ -20,7 +20,7 @@ export default function Contact({ data }) {
               href={`mailto:${data.email}`}
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg font-heading text-[0.9rem] font-medium no-underline transition-all duration-200 cursor-pointer border-none bg-accent text-[#fff] hover:opacity-85 hover:-translate-y-[1px]"
             >
-              ✉️ Email Saya
+              {lang === 'en' ? '✉️ Email Me' : '✉️ Email Saya'}
             </a>
             <a
               href={data.linkedin}
