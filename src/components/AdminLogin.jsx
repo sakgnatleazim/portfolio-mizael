@@ -7,7 +7,7 @@ export default function AdminLogin({ onLoginSuccess }) {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (username === 'admin' && password === 'Miza3lFT123!') {
+    if (username === 'admin' && password === 'mizaelFTI23') {
       sessionStorage.setItem('admin_authenticated', 'true')
       onLoginSuccess()
     } else {
