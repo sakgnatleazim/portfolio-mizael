@@ -20,7 +20,10 @@ export default function Contact({ data, lang }) {
               href={`mailto:${data.email}`}
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg font-heading text-[0.9rem] font-medium no-underline transition-all duration-200 cursor-pointer border-none bg-accent text-[#fff] hover:opacity-85 hover:-translate-y-[1px]"
             >
-              {lang === 'en' ? '✉️ Email Me' : '✉️ Email Saya'}
+              <svg className="w-4 h-4 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              {lang === 'en' ? 'Email Me' : 'Email Saya'}
             </a>
             <a
               href={data.linkedin}

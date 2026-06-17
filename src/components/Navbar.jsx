@@ -64,18 +64,26 @@ export default function Navbar({ theme, onToggleTheme, lang, onToggleLang }) {
       </ul>
       <div className="flex items-center gap-3">
         <button
-          className="bg-transparent border border-border-custom rounded-lg px-2.5 py-1.5 cursor-pointer text-text-muted text-[0.8rem] font-mono font-bold transition-all duration-200 flex items-center hover:border-accent hover:text-accent"
+          className="bg-transparent border border-border-custom rounded-lg px-2.5 py-1.5 cursor-pointer text-text-muted text-[0.75rem] font-mono font-bold transition-all duration-200 flex items-center hover:border-accent hover:text-accent tracking-wider"
           onClick={onToggleLang}
           title="Ubah Bahasa / Switch Language"
         >
-          {lang === 'id' ? '🇮🇩 ID' : '🇬🇧 EN'}
+          {lang === 'id' ? 'ID' : 'EN'}
         </button>
         <button
-          className="bg-transparent border border-border-custom rounded-lg px-2.5 py-1.5 cursor-pointer text-text-muted text-base transition-all duration-200 flex items-center hover:border-accent hover:text-accent"
+          className="bg-transparent border border-border-custom rounded-lg p-2 cursor-pointer text-text-muted transition-all duration-200 flex items-center hover:border-accent hover:text-accent"
           onClick={onToggleTheme}
           title="Toggle theme"
         >
-          {theme === 'dark' ? '🌙' : '☀️'}
+          {theme === 'dark' ? (
+            <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464-5.636a1 1 0 010 1.414l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-5.636 4.95a1 1 0 101.414-1.414l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM4.636 15.364a1 1 0 010-1.414l.707-.707a1 1 0 111.414 1.414l-.707.707a1 1 0 01-1.414 0zM4 10a1 1 0 100-2H3a1 1 0 000 2h1zm1.414-4.636a1 1 0 011.414 0l.707.707a1 1 0 11-1.414 1.414l-.707-.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          )}
         </button>
       </div>
     </nav>

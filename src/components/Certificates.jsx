@@ -26,7 +26,11 @@ export default function Certificates({ data, lang }) {
             >
               <div>
                 <div className="flex justify-between items-start mb-2">
-                  <span className="text-[1.3rem] filter drop-shadow">📜</span>
+                  <span className="text-text-muted">
+                    <svg className="w-5 h-5 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  </span>
                   <span className="text-[0.75rem] text-text-muted font-mono bg-bg3 border border-border-custom rounded-full px-2.5 py-0.5">
                     {cert.date}
                   </span>
@@ -43,9 +47,12 @@ export default function Certificates({ data, lang }) {
                 {cert.imgUrl && (
                   <button
                     onClick={() => setSelectedImg(cert.imgUrl)}
-                    className="inline-flex items-center justify-center px-3 py-1.5 bg-accent/10 hover:bg-accent/20 text-accent rounded-lg text-xs font-semibold cursor-pointer transition-colors border-none"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent/10 hover:bg-accent/20 text-accent rounded-lg text-xs font-semibold cursor-pointer transition-colors border-none"
                   >
-                    🔍 {lang === 'en' ? 'View Certificate' : 'Lihat Sertifikat'}
+                    <svg className="w-3.5 h-3.5 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    {lang === 'en' ? 'View Certificate' : 'Lihat Sertifikat'}
                   </button>
                 )}
                 {cert.credentialUrl && (
@@ -53,9 +60,12 @@ export default function Certificates({ data, lang }) {
                     href={cert.credentialUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center px-3 py-1.5 border border-border-custom hover:border-accent text-text-custom hover:text-accent rounded-lg text-xs font-semibold no-underline transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border-custom hover:border-accent text-text-custom hover:text-accent rounded-lg text-xs font-semibold no-underline transition-colors"
                   >
-                    🔗 {lang === 'en' ? 'Verify' : 'Verifikasi'} →
+                    <svg className="w-3.5 h-3.5 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                    </svg>
+                    {lang === 'en' ? 'Verify' : 'Verifikasi'} →
                   </a>
                 )}
               </div>
