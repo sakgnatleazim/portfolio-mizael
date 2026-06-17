@@ -184,11 +184,7 @@ export default function App() {
     return () => {
       observer.disconnect()
     }
-  }, [portfolioData, route, loading])
-
-  if (showIntro) {
-    return <LoadingScreen isLoading={loading} onFinished={() => setShowIntro(false)} />
-  }
+  }, [portfolioData, route, loading, showIntro])
 
   // Translate data for rendering on the frontend
   const translatedHero = portfolioData.hero ? {
@@ -259,12 +255,15 @@ export default function App() {
   if (route === '/admin') {
     if (isAuthenticated) {
       return (
-        <AdminPanel
-          data={portfolioData}
-          onSave={handleSaveData}
-          onReset={handleResetData}
-          onLogout={handleLogout}
-        />
+        <>
+          {showIntro && <LoadingScreen isLoading={loading} onFinished={() => setShowIntro(false)} />}
+          <AdminPanel
+            data={portfolioData}
+            onSave={handleSaveData}
+            onReset={handleResetData}
+            onLogout={handleLogout}
+          />
+        </>
       )
     } else {
       return <AdminLogin onLoginSuccess={() => setIsAuthenticated(true)} />
@@ -274,6 +273,7 @@ export default function App() {
   // Route: / (Homepage)
   return (
     <>
+      {showIntro && <LoadingScreen isLoading={loading} onFinished={() => setShowIntro(false)} />}
       <Navbar theme={theme} onToggleTheme={toggleTheme} lang={lang} onToggleLang={toggleLang} />
       <Hero data={translatedHero} />
       <About data={translatedAbout} />
