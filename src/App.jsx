@@ -13,6 +13,7 @@ import AdminPanel from './components/AdminPanel'
 import AdminLogin from './components/AdminLogin'
 import { defaultPortfolioData, normalizePortfolioData } from './data/defaultPortfolioData'
 import { supabase } from './supabaseClient'
+import LoadingScreen from './components/LoadingScreen'
 
 export default function App() {
   const [theme, setTheme] = useState(() => {
@@ -38,6 +39,7 @@ export default function App() {
   })
 
   const [loading, setLoading] = useState(true)
+  const [showIntro, setShowIntro] = useState(true)
 
   // Simple client-side SPA routing state
   const [route, setRoute] = useState(window.location.pathname)
@@ -184,15 +186,8 @@ export default function App() {
     }
   }, [portfolioData, route, loading])
 
-  if (loading && supabase) {
-    return (
-      <div className="min-h-screen bg-bg flex items-center justify-center text-text-custom font-mono">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-sm">Menghubungkan ke database...</p>
-        </div>
-      </div>
-    )
+  if (showIntro) {
+    return <LoadingScreen isLoading={loading} onFinished={() => setShowIntro(false)} />
   }
 
   // Translate data for rendering on the frontend

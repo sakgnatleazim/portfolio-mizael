@@ -1,0 +1,202 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .stage {
+    background: #ffffff;
+    width: 100%;
+    height: 440px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    border: 0.5px solid rgba(0,0,0,0.08);
+  }
+
+  /* Subtle dot grid bg */
+  .dot-grid {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, #d1d5db 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: 0;
+    animation: gridIn 0.6s ease 0.1s forwards;
+  }
+  @keyframes gridIn { to { opacity: 1; } }
+
+  /* Corner brackets — blue */
+  .corner { position: absolute; width: 20px; height: 20px; opacity: 0; animation: cIn 0.3s ease 0.2s forwards; }
+  .corner.tl { top: 20px; left: 20px; border-top: 2px solid #2563eb; border-left: 2px solid #2563eb; }
+  .corner.tr { top: 20px; right: 20px; border-top: 2px solid #2563eb; border-right: 2px solid #2563eb; }
+  .corner.bl { bottom: 20px; left: 20px; border-bottom: 2px solid #2563eb; border-left: 2px solid #2563eb; }
+  .corner.br { bottom: 20px; right: 20px; border-bottom: 2px solid #2563eb; border-right: 2px solid #2563eb; }
+  @keyframes cIn { to { opacity: 1; } }
+
+  /* Blue scan line */
+  .scan {
+    position: absolute; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent 0%, #2563eb 40%, #93c5fd 60%, transparent 100%);
+    top: 0; opacity: 0;
+    animation: scanDown 2s ease-in-out 0.4s infinite;
+  }
+  @keyframes scanDown {
+    0%   { top: 8%;  opacity: 0; }
+    5%   { opacity: 0.7; }
+    95%  { opacity: 0.7; }
+    100% { top: 92%; opacity: 0; }
+  }
+
+  /* Center content */
+  .content { z-index: 2; text-align: center; position: relative; }
+
+  /* Tag line above */
+  .tag {
+    font-size: 10px; letter-spacing: 0.3em; color: #2563eb;
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-bottom: 18px;
+    opacity: 0; animation: fadeIn 0.4s ease 0.3s forwards;
+  }
+  .tag-line { width: 28px; height: 1.5px; background: #2563eb; }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* Name letters */
+  .name-row { display: flex; gap: 0px; justify-content: center; }
+  .ch {
+    font-size: 52px; font-weight: 800;
+    font-family: 'Georgia', serif;
+    color: #0f172a;
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: dropIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    line-height: 1;
+  }
+  .ch.blue { color: #2563eb; }
+  @keyframes dropIn { to { opacity: 1; transform: translateY(0); } }
+
+  /* Underline that draws */
+  .underline-wrap { position: relative; height: 3px; margin-top: 6px; overflow: hidden; }
+  .underline-fill {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    height: 3px; width: 0; background: #2563eb; border-radius: 2px;
+    animation: lineExpand 0.6s cubic-bezier(0.4,0,0.2,1) 1.4s forwards;
+  }
+  @keyframes lineExpand { to { width: 100%; } }
+
+  /* Subtitle */
+  .sub {
+    margin-top: 14px; font-size: 12px; letter-spacing: 0.18em;
+    color: #64748b; font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    opacity: 0; animation: fadeIn 0.5s ease 1.7s forwards;
+  }
+
+  /* Dots */
+  .dots { display: flex; gap: 7px; justify-content: center; margin-top: 22px; }
+  .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: #e2e8f0;
+    animation: dotP 1.3s ease-in-out infinite;
+  }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dotP {
+    0%,100% { background: #e2e8f0; transform: scale(1); }
+    50% { background: #2563eb; transform: scale(1.5); }
+  }
+
+  /* Progress bar bottom */
+  .bar-wrap { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: #f1f5f9; }
+  .bar-fill { height: 100%; width: 0; background: #2563eb; animation: barGrow 2.6s cubic-bezier(0.4,0,0.2,1) 0.3s forwards; }
+  @keyframes barGrow { to { width: 100%; } }
+
+  /* Counter */
+  .counter {
+    position: absolute; bottom: 12px; right: 18px;
+    font-size: 10px; font-family: 'Courier New', monospace;
+    color: #94a3b8; letter-spacing: 0.1em;
+  }
+  .replay-hint {
+    position: absolute; bottom: 12px; left: 18px;
+    font-size: 10px; font-family: 'Courier New', monospace;
+    color: #cbd5e1; letter-spacing: 0.06em;
+  }
+
+  /* Hover glitch on letters */
+  .stage:hover .ch { animation-play-state: running; }
+  .stage:hover .ch.blue {
+    text-shadow: 2px 0 #93c5fd, -2px 0 #1d4ed8;
+    transition: text-shadow 0.05s;
+  }
+</style>
+
+<div class="stage" id="stage">
+  <div class="dot-grid"></div>
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+  <div class="scan"></div>
+
+  <div class="content">
+    <div class="tag">
+      <span class="tag-line"></span>
+      Data &amp; Informatics
+      <span class="tag-line"></span>
+    </div>
+    <div class="name-row" id="letters"></div>
+    <div class="underline-wrap"><div class="underline-fill"></div></div>
+    <div class="sub">Informatics Engineering Student</div>
+    <div class="dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </div>
+
+  <div class="bar-wrap"><div class="bar-fill" id="bar"></div></div>
+  <div class="counter" id="counter">000%</div>
+  <div class="replay-hint">click to replay</div>
+</div>
+
+<script>
+  const NAME = "Mizael";
+  const BLUE_IDX = [0, 3]; // M and a = accented
+
+  function buildLetters() {
+    const el = document.getElementById("letters");
+    el.innerHTML = "";
+    NAME.split("").forEach((ch, i) => {
+      const s = document.createElement("span");
+      s.className = "ch" + (BLUE_IDX.includes(i) ? " blue" : "");
+      s.textContent = ch;
+      s.style.animationDelay = (0.5 + i * 0.1) + "s";
+      el.appendChild(s);
+    });
+  }
+
+  function animateCounter() {
+    const el = document.getElementById("counter");
+    let n = 0;
+    const iv = setInterval(() => {
+      n = Math.min(100, n + Math.floor(Math.random() * 6) + 2);
+      el.textContent = String(n).padStart(3, "0") + "%";
+      if (n >= 100) clearInterval(iv);
+    }, 90);
+  }
+
+  function replay() {
+    const bar = document.getElementById("bar");
+    bar.style.animation = "none"; bar.offsetHeight; bar.style.animation = "";
+    buildLetters();
+    animateCounter();
+  }
+
+  buildLetters();
+  animateCounter();
+  document.getElementById("stage").addEventListener("click", replay);
+</script>
