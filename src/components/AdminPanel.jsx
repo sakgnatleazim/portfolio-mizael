@@ -340,8 +340,17 @@ export default function AdminPanel({ data, onSave, onReset, onLogout }) {
                 </div>
                 <div className="flex flex-col gap-4">
                   {(formData.skills || []).map((skill, index) => (
-                    <div key={index} className="p-4 bg-bg2 border border-border-custom rounded-xl flex items-center gap-3">
-                      <div className="flex-1 grid grid-cols-3 gap-3">
+                    <div key={index} className="p-4 bg-bg2 border border-border-custom rounded-xl flex items-center gap-4">
+                      {/* Skill Logo Preview */}
+                      <div className="w-12 h-12 bg-bg3 border border-border-custom rounded-lg overflow-hidden flex items-center justify-center shrink-0 p-1.5 text-center">
+                        {skill.customLogo ? (
+                          <img src={skill.customLogo} alt="Logo" className="w-full h-full object-contain" />
+                        ) : (
+                          <span className="text-[10px] text-text-muted font-mono leading-none break-all">{skill.logoType || 'None'}</span>
+                        )}
+                      </div>
+
+                      <div className="flex-1 grid grid-cols-4 gap-3 items-end">
                         <div>
                           <label className={labelClass}>Nama Skill (Sama)</label>
                           <input
@@ -361,9 +370,10 @@ export default function AdminPanel({ data, onSave, onReset, onLogout }) {
                           />
                         </div>
                         <div>
-                          <label className={labelClass}>Logo / Ikon</label>
+                          <label className={labelClass}>Logo Bawaan</label>
                           <select
                             className={inputClass}
+                            disabled={!!skill.customLogo}
                             value={skill.logoType || 'Python'}
                             onChange={(e) => handleArrayChange('skills', index, 'logoType', e.target.value)}
                           >
@@ -372,13 +382,43 @@ export default function AdminPanel({ data, onSave, onReset, onLogout }) {
                             ))}
                           </select>
                         </div>
+                        <div>
+                          <label className={labelClass}>Logo Kustom</label>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleImageFileChange(e, (base64) => handleArrayChange('skills', index, 'customLogo', base64))}
+                            className="hidden"
+                            id={`skill-logo-input-${index}`}
+                          />
+                          <div className="flex flex-col gap-1">
+                            <button
+                              type="button"
+                              onClick={() => document.getElementById(`skill-logo-input-${index}`).click()}
+                              className="px-2 py-1.5 bg-accent/20 hover:bg-accent/30 text-accent rounded-lg text-xs font-bold block cursor-pointer transition-colors border-none w-full text-center"
+                            >
+                              {skill.customLogo ? 'Ubah Logo' : 'Unggah Logo'}
+                            </button>
+                            {skill.customLogo && (
+                              <button
+                                type="button"
+                                onClick={() => handleArrayChange('skills', index, 'customLogo', '')}
+                                className="text-[10px] text-red-400 hover:underline cursor-pointer border-none bg-transparent block"
+                              >
+                                Hapus Logo Kustom
+                              </button>
+                            )}
+                          </div>
+                        </div>
                       </div>
                       <button
                         onClick={() => handleRemoveItem('skills', index)}
-                        className="p-2.5 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer border-none bg-transparent mt-4 text-base"
+                        className="p-2.5 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer border-none bg-transparent self-center shrink-0"
                         title="Hapus Skill"
                       >
-                        🗑️
+                        <svg className="w-5 h-5 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
                       </button>
                     </div>
                   ))}

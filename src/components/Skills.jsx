@@ -115,7 +115,11 @@ export default function Skills({ data }) {
               key={index}
               className="bg-card-bg border border-border-custom rounded-xl p-[1.25rem_1rem] flex flex-col items-center gap-3 transition-all duration-200 text-center hover:border-accent hover:-translate-y-[2px]"
             >
-              {skillLogos[skill.logoType] || skillLogos.Python}
+              {skill.customLogo ? (
+                <img src={skill.customLogo} alt={skill.name} className="w-10 h-10 object-contain" />
+              ) : (
+                skillLogos[skill.logoType] || skillLogos.Python
+              )}
               <span className="text-[0.82rem] font-medium text-text-custom">
                 {skill.name}
               </span>
