@@ -61,6 +61,14 @@ export default function App() {
     })
   }
 
+  const savePortfolioDataToLocalStorage = (data) => {
+    try {
+      localStorage.setItem('portfolio_data', JSON.stringify(data))
+    } catch (e) {
+      console.warn('Gagal menyimpan ke localStorage (kemungkinan ukuran data melebihi batas kuota 5MB):', e)
+    }
+  }
+
   const handleSaveData = async (newData) => {
     const normalized = normalizePortfolioData(newData)
 
@@ -75,11 +83,11 @@ export default function App() {
           alert('Perubahan disimpan di browser Anda, tetapi GAGAL sinkronisasi ke database: ' + error.message)
           // Still save to local storage as fallback
           setPortfolioData(normalized)
-          localStorage.setItem('portfolio_data', JSON.stringify(normalized))
+          savePortfolioDataToLocalStorage(normalized)
         } else {
           console.log('Sinkronisasi Supabase berhasil!')
           setPortfolioData(normalized)
-          localStorage.setItem('portfolio_data', JSON.stringify(normalized))
+          savePortfolioDataToLocalStorage(normalized)
           alert('Perubahan berhasil disimpan ke database!')
         }
       } catch (err) {
@@ -87,18 +95,18 @@ export default function App() {
         alert('Gagal terhubung ke database: ' + err.message + '\nPerubahan disimpan di browser Anda (offline).')
         // Still save to local storage as fallback
         setPortfolioData(normalized)
-        localStorage.setItem('portfolio_data', JSON.stringify(normalized))
+        savePortfolioDataToLocalStorage(normalized)
       }
     } else {
       setPortfolioData(normalized)
-      localStorage.setItem('portfolio_data', JSON.stringify(normalized))
+      savePortfolioDataToLocalStorage(normalized)
       alert('Perubahan berhasil disimpan secara lokal (Offline Mode).')
     }
   }
 
   const handleResetData = async () => {
     setPortfolioData(defaultPortfolioData)
-    localStorage.setItem('portfolio_data', JSON.stringify(defaultPortfolioData))
+    savePortfolioDataToLocalStorage(defaultPortfolioData)
 
     if (supabase) {
       try {
@@ -147,7 +155,7 @@ export default function App() {
         if (data && data.data) {
           const normalized = normalizePortfolioData(data.data)
           setPortfolioData(normalized)
-          localStorage.setItem('portfolio_data', JSON.stringify(normalized))
+          savePortfolioDataToLocalStorage(normalized)
         } else if (error && error.code === 'PGRST116') {
           // Row doesn't exist yet, upsert default
           console.log('Data tidak ditemukan di Supabase, meng-upsert default data...')
