@@ -299,10 +299,10 @@ export default function App() {
       <Navbar theme={theme} onToggleTheme={toggleTheme} lang={lang} onToggleLang={toggleLang} />
       <Hero data={translatedHero} />
       <About data={translatedAbout} />
-      <Skills data={translatedSkills} />
+      <Skills data={translatedSkills} lang={lang} />
       <Projects data={translatedProjects} lang={lang} />
-      <Activities data={translatedActivities} />
-      <Organizations data={translatedOrganizations} />
+      <Activities data={translatedActivities} lang={lang} />
+      <Organizations data={translatedOrganizations} lang={lang} />
       <Certificates data={translatedCertificates} lang={lang} />
       <Contact data={translatedContact} lang={lang} />
       <Footer data={translatedFooter} />

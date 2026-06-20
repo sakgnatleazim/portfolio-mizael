@@ -1,4 +1,4 @@
-export default function Activities({ data }) {
+export default function Activities({ data, lang }) {
   if (!data) return null
 
   return (
@@ -10,7 +10,7 @@ export default function Activities({ data }) {
             // activities
           </p>
           <h2 className="font-heading text-[clamp(1.6rem,3vw,2.2rem)] font-bold tracking-[-0.02em] text-text-custom mb-12">
-            Dokumentasi Keaktifan
+            {lang === 'en' ? 'Activity Documentation' : 'Dokumentasi Keaktifan'}
           </h2>
         </div>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-5 fade-in">

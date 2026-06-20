@@ -94,7 +94,7 @@ const skillLogos = {
   )
 }
 
-export default function Skills({ data }) {
+export default function Skills({ data, lang }) {
   if (!data) return null
 
   return (
@@ -106,7 +106,7 @@ export default function Skills({ data }) {
             // skills
           </p>
           <h2 className="font-heading text-[clamp(1.6rem,3vw,2.2rem)] font-bold tracking-[-0.02em] text-text-custom mb-12">
-            Bahasa &amp; Tools
+            {lang === 'en' ? 'Languages & Tools' : 'Bahasa & Tools'}
           </h2>
         </div>
         <div className="grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-4 fade-in">

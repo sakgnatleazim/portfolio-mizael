@@ -1,4 +1,4 @@
-export default function Organizations({ data }) {
+export default function Organizations({ data, lang }) {
   if (!data) return null
 
   return (
@@ -10,7 +10,7 @@ export default function Organizations({ data }) {
             // organizations
           </p>
           <h2 className="font-heading text-[clamp(1.6rem,3vw,2.2rem)] font-bold tracking-[-0.02em] text-text-custom mb-12">
-            Organisasi &amp; Kepanitiaan
+            {lang === 'en' ? 'Organizations & Committees' : 'Organisasi & Kepanitiaan'}
           </h2>
         </div>
         <div className="flex flex-col gap-4 fade-in">
