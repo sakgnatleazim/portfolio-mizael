@@ -20,9 +20,17 @@ export default function App() {
     return localStorage.getItem('theme') || 'dark'
   })
 
-  // Language state: 'id' or 'en'
+  // Language state: 'id' or 'en' (automatically detects browser language on first visit)
   const [lang, setLang] = useState(() => {
-    return localStorage.getItem('lang') || 'id'
+    const saved = localStorage.getItem('lang')
+    if (saved) return saved
+
+    // Deteksi bahasa browser pengunjung
+    const browserLang = navigator.language || navigator.userLanguage || ''
+    if (browserLang.startsWith('id') || browserLang.startsWith('in')) {
+      return 'id'
+    }
+    return 'en'
   })
 
   // Load from localStorage first, then sync with Supabase
