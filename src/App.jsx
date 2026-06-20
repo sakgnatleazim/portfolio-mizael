@@ -277,12 +277,14 @@ export default function App() {
       return (
         <>
           {showIntro && <LoadingScreen isLoading={loading} onFinished={() => setShowIntro(false)} />}
-          <AdminPanel
-            data={portfolioData}
-            onSave={handleSaveData}
-            onReset={handleResetData}
-            onLogout={handleLogout}
-          />
+          {!loading && (
+            <AdminPanel
+              data={portfolioData}
+              onSave={handleSaveData}
+              onReset={handleResetData}
+              onLogout={handleLogout}
+            />
+          )}
         </>
       )
     } else {
