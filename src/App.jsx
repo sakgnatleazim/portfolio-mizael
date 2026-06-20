@@ -63,8 +63,6 @@ export default function App() {
 
   const handleSaveData = async (newData) => {
     const normalized = normalizePortfolioData(newData)
-    setPortfolioData(normalized)
-    localStorage.setItem('portfolio_data', JSON.stringify(normalized))
 
     if (supabase) {
       try {
@@ -74,13 +72,27 @@ export default function App() {
 
         if (error) {
           console.error('Gagal menyimpan ke Supabase:', error)
-          alert('Berhasil disimpan lokal, tetapi gagal sinkronisasi ke Supabase: ' + error.message)
+          alert('Perubahan disimpan di browser Anda, tetapi GAGAL sinkronisasi ke database: ' + error.message)
+          // Still save to local storage as fallback
+          setPortfolioData(normalized)
+          localStorage.setItem('portfolio_data', JSON.stringify(normalized))
         } else {
           console.log('Sinkronisasi Supabase berhasil!')
+          setPortfolioData(normalized)
+          localStorage.setItem('portfolio_data', JSON.stringify(normalized))
+          alert('Perubahan berhasil disimpan ke database!')
         }
       } catch (err) {
         console.error('Error saat menyimpan ke Supabase:', err)
+        alert('Gagal terhubung ke database: ' + err.message + '\nPerubahan disimpan di browser Anda (offline).')
+        // Still save to local storage as fallback
+        setPortfolioData(normalized)
+        localStorage.setItem('portfolio_data', JSON.stringify(normalized))
       }
+    } else {
+      setPortfolioData(normalized)
+      localStorage.setItem('portfolio_data', JSON.stringify(normalized))
+      alert('Perubahan berhasil disimpan secara lokal (Offline Mode).')
     }
   }
 

@@ -56,9 +56,8 @@ export default function AdminPanel({ data, onSave, onReset, onLogout }) {
     e.target.value = '' // Reset value to allow same file selection again
   }
 
-  const handleSave = () => {
-    onSave(formData)
-    alert('Perubahan berhasil disimpan!')
+  const handleSave = async () => {
+    await onSave(formData)
   }
 
   const handleReset = () => {
