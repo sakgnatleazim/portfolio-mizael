@@ -87,6 +87,33 @@ export default function AdminPanel({ data, onSave, onReset, onLogout }) {
     e.target.value = '' // Reset value to allow same file selection again
   }
 
+  const handlePdfFileChange = (e, callback, nameCallback) => {
+    const file = e.target.files[0]
+    if (file) {
+      if (file.type !== 'application/pdf') {
+        alert('File harus berupa berkas PDF!')
+        e.target.value = ''
+        return
+      }
+      // Batasi ukuran ke 2.5MB
+      if (file.size > 2.5 * 1024 * 1024) {
+        alert('Ukuran file PDF terlalu besar! Batas maksimal adalah 2.5 MB.')
+        e.target.value = ''
+        return
+      }
+
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        callback(event.target.result)
+        if (nameCallback) {
+          nameCallback(file.name)
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+    e.target.value = ''
+  }
+
   const handleSave = async () => {
     await onSave(formData)
   }
@@ -353,6 +380,84 @@ export default function AdminPanel({ data, onSave, onReset, onLogout }) {
                     </div>
                   </div>
                 ))}
+
+                <h4 className="text-sm font-semibold mb-2 text-text-custom mt-6 border-b border-border-custom pb-1 font-heading">Dokumen (CV & Portofolio PDF)</h4>
+                
+                {/* CV PDF Upload */}
+                <div className="mb-4 p-4 bg-bg2 border border-border-custom rounded-xl">
+                  <label className={labelClass}>Curriculum Vitae (CV) - PDF (Maksimal 2.5MB)</label>
+                  <div className="flex items-center gap-4 mt-2 font-sans">
+                    <div className="flex-1">
+                      {formData.about.cvPdf ? (
+                        <div className="flex items-center gap-2 text-xs text-green-500 font-mono mb-2">
+                          <span>📄 CV Terunggah: <strong>{formData.about.cvPdfName || 'cv.pdf'}</strong></span>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-text-muted font-mono block mb-2">Belum ada CV terunggah</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={(e) => handlePdfFileChange(
+                          e,
+                          (base64) => handleChange('about', 'cvPdf', base64),
+                          (name) => handleChange('about', 'cvPdfName', name)
+                        )}
+                        className="text-xs text-text-muted file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-accent/20 file:text-accent hover:file:bg-accent/30 file:cursor-pointer"
+                      />
+                    </div>
+                    {formData.about.cvPdf && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleChange('about', 'cvPdf', '')
+                          handleChange('about', 'cvPdfName', '')
+                        }}
+                        className="px-3 py-1.5 bg-red-600/20 text-red-500 hover:bg-red-600/30 rounded-lg text-xs font-semibold cursor-pointer border-none"
+                      >
+                        Hapus
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Portfolio PDF Upload */}
+                <div className="mb-4 p-4 bg-bg2 border border-border-custom rounded-xl">
+                  <label className={labelClass}>Portofolio Lengkap - PDF (Maksimal 2.5MB)</label>
+                  <div className="flex items-center gap-4 mt-2 font-sans">
+                    <div className="flex-1">
+                      {formData.about.portfolioPdf ? (
+                        <div className="flex items-center gap-2 text-xs text-green-500 font-mono mb-2">
+                          <span>📄 Portofolio Terunggah: <strong>{formData.about.portfolioPdfName || 'portfolio.pdf'}</strong></span>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-text-muted font-mono block mb-2">Belum ada Portofolio terunggah</span>
+                      )}
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={(e) => handlePdfFileChange(
+                          e,
+                          (base64) => handleChange('about', 'portfolioPdf', base64),
+                          (name) => handleChange('about', 'portfolioPdfName', name)
+                        )}
+                        className="text-xs text-text-muted file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-accent/20 file:text-accent hover:file:bg-accent/30 file:cursor-pointer"
+                      />
+                    </div>
+                    {formData.about.portfolioPdf && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          handleChange('about', 'portfolioPdf', '')
+                          handleChange('about', 'portfolioPdfName', '')
+                        }}
+                        className="px-3 py-1.5 bg-red-600/20 text-red-500 hover:bg-red-600/30 rounded-lg text-xs font-semibold cursor-pointer border-none"
+                      >
+                        Hapus
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 

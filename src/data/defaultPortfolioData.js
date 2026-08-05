@@ -29,7 +29,11 @@ export const defaultPortfolioData = {
       { label_id: 'Program Studi', label_en: 'Study Program', value_id: 'Teknik Informatika', value_en: 'Informatics Engineering' },
       { label_id: 'Angkatan / Semester', label_en: 'Batch / Semester', value_id: '2023  ·  Semester 6', value_en: '2023  ·  6th Semester' },
       { label_id: 'Fokus', label_en: 'Focus', value_id: 'Data Analytics & Data Science', value_en: 'Data Analytics & Data Science' }
-    ]
+    ],
+    cvPdf: '',
+    cvPdfName: '',
+    portfolioPdf: '',
+    portfolioPdfName: ''
   },
   skills: [
     { name: 'Python', level_id: 'Tingkat Lanjut', level_en: 'Advanced', logoType: 'Python' },

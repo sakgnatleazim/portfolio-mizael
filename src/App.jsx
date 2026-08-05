@@ -88,7 +88,11 @@ export default function App() {
 
         if (error) {
           console.error('Gagal menyimpan ke Supabase:', error)
-          alert('Perubahan disimpan di browser Anda, tetapi GAGAL sinkronisasi ke database: ' + error.message)
+          let errorMsg = error.message
+          if (errorMsg.includes('Failed to fetch') || errorMsg.includes('fetch')) {
+            errorMsg += '\n\nKemungkinan penyebab:\n1. Adblocker / Brave Shields aktif dan memblokir request ke Supabase.\n2. Koneksi internet terputus.\n3. Masalah CORS atau VPN.'
+          }
+          alert('Perubahan disimpan di browser Anda, tetapi GAGAL sinkronisasi ke database: ' + errorMsg)
           // Still save to local storage as fallback
           setPortfolioData(normalized)
           savePortfolioDataToLocalStorage(normalized)
@@ -100,7 +104,11 @@ export default function App() {
         }
       } catch (err) {
         console.error('Error saat menyimpan ke Supabase:', err)
-        alert('Gagal terhubung ke database: ' + err.message + '\nPerubahan disimpan di browser Anda (offline).')
+        let errorMsg = err.message
+        if (errorMsg.includes('Failed to fetch') || errorMsg.includes('fetch')) {
+          errorMsg += '\n\nKemungkinan penyebab:\n1. Adblocker / Brave Shields aktif dan memblokir request ke Supabase.\n2. Koneksi internet terputus.\n3. Masalah CORS atau VPN.'
+        }
+        alert('Gagal terhubung ke database: ' + errorMsg + '\nPerubahan disimpan di browser Anda (offline).')
         // Still save to local storage as fallback
         setPortfolioData(normalized)
         savePortfolioDataToLocalStorage(normalized)
@@ -234,7 +242,11 @@ export default function App() {
       ...d,
       label: d[`label_${lang}`] || d.label_id || d.label || '',
       value: d[`value_${lang}`] || d.value_id || d.value || ''
-    })) : []
+    })) : [],
+    cvPdf: portfolioData.about.cvPdf || '',
+    cvPdfName: portfolioData.about.cvPdfName || '',
+    portfolioPdf: portfolioData.about.portfolioPdf || '',
+    portfolioPdfName: portfolioData.about.portfolioPdfName || ''
   } : {}
 
   const translatedSkills = Array.isArray(portfolioData.skills) ? portfolioData.skills.map(s => ({
@@ -306,7 +318,7 @@ export default function App() {
       {showIntro && <LoadingScreen isLoading={loading} onFinished={() => setShowIntro(false)} />}
       <Navbar theme={theme} onToggleTheme={toggleTheme} lang={lang} onToggleLang={toggleLang} />
       <Hero data={translatedHero} />
-      <About data={translatedAbout} />
+      <About data={translatedAbout} lang={lang} />
       <Skills data={translatedSkills} lang={lang} />
       <Projects data={translatedProjects} lang={lang} />
       <Activities data={translatedActivities} lang={lang} />
