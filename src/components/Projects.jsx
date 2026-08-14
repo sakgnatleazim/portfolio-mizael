@@ -17,7 +17,7 @@ export default function Projects({ data, lang }) {
   return (
     <section id="projects" className="py-[100px] scroll-mt-[60px]">
       <div className="max-w-[900px] w-full mx-auto px-8">
-        <div className="h-[1px] bg-border-custom mb-16"></div>
+        <div className="section-divider mb-16"></div>
         <div className="fade-in">
           <p className="font-mono text-[0.75rem] text-accent tracking-[0.15em] uppercase mb-2">
             // projects
@@ -64,7 +64,7 @@ export default function Projects({ data, lang }) {
             return (
               <div
                 key={index}
-                className="bg-card-bg border border-border-custom rounded-xl p-6 flex flex-col gap-3 transition-all duration-200 hover:border-accent hover:-translate-y-[3px] hover:shadow-custom"
+                className="card-glow bg-card-bg border border-border-custom rounded-xl p-6 flex flex-col gap-3 transition-all duration-200 hover:border-accent hover:-translate-y-[3px]"
               >
                 <span
                   className={`text-[0.7rem] font-mono tracking-[0.1em] uppercase ${

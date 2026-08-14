@@ -100,7 +100,7 @@ export default function Skills({ data, lang }) {
   return (
     <section id="skills" className="py-[100px] scroll-mt-[60px]">
       <div className="max-w-[900px] w-full mx-auto px-8">
-        <div className="h-[1px] bg-border-custom mb-16"></div>
+        <div className="section-divider mb-16"></div>
         <div className="fade-in">
           <p className="font-mono text-[0.75rem] text-accent tracking-[0.15em] uppercase mb-2">
             // skills
@@ -113,7 +113,7 @@ export default function Skills({ data, lang }) {
           {data.map((skill, index) => (
             <div
               key={index}
-              className="bg-card-bg border border-border-custom rounded-xl p-[1.25rem_1rem] flex flex-col items-center gap-3 transition-all duration-200 text-center hover:border-accent hover:-translate-y-[2px]"
+              className="card-glow bg-card-bg border border-border-custom rounded-xl p-[1.25rem_1rem] flex flex-col items-center gap-3 transition-all duration-200 text-center hover:border-accent hover:-translate-y-[2px]"
             >
               {skill.customLogo ? (
                 <img src={skill.customLogo} alt={skill.name} className="w-10 h-10 object-contain" />

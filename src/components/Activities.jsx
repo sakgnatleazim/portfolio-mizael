@@ -4,7 +4,7 @@ export default function Activities({ data, lang }) {
   return (
     <section id="activities" className="py-[100px] scroll-mt-[60px]">
       <div className="max-w-[900px] w-full mx-auto px-8">
-        <div className="h-[1px] bg-border-custom mb-16"></div>
+        <div className="section-divider mb-16"></div>
         <div className="fade-in">
           <p className="font-mono text-[0.75rem] text-accent tracking-[0.15em] uppercase mb-2">
             // activities
@@ -17,7 +17,7 @@ export default function Activities({ data, lang }) {
           {data.map((act, index) => (
             <div
               key={index}
-              className="bg-card-bg border border-border-custom rounded-xl overflow-hidden transition-all duration-200 hover:border-accent hover:-translate-y-[2px]"
+              className="card-glow bg-card-bg border border-border-custom rounded-xl overflow-hidden transition-all duration-200 hover:border-accent hover:-translate-y-[2px]"
             >
               <div className="w-full h-40 bg-bg3 flex items-center justify-center text-text-muted font-mono text-[0.75rem] tracking-[0.08em] border-b border-border-custom overflow-hidden">
                 {act.imgUrl ? (

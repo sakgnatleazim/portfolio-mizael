@@ -14,14 +14,17 @@ export default function Hero({ data }) {
           
           <div className="flex items-center gap-6 mb-4 max-[480px]:gap-3">
             {data.profileImg && (
-              <div className="w-[120px] h-[120px] rounded-full border-2 border-accent overflow-hidden shrink-0 shadow-custom max-[680px]:w-[80px] max-[680px]:h-[80px] max-[480px]:w-[60px] max-[480px]:h-[60px]">
-                <img
-                  src={data.profileImg}
-                  alt={data.name}
-                  loading="eager"
-                  decoding="async"
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative shrink-0">
+                <div className="absolute inset-0 rounded-full bg-accent/30 blur-xl scale-110 -z-10"></div>
+                <div className="w-[120px] h-[120px] rounded-full border-2 border-accent overflow-hidden shadow-custom max-[680px]:w-[80px] max-[680px]:h-[80px] max-[480px]:w-[60px] max-[480px]:h-[60px]">
+                  <img
+                    src={data.profileImg}
+                    alt={data.name}
+                    loading="eager"
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
             )}
             <h1 className="font-heading text-[clamp(2rem,4.8vw,3.5rem)] font-bold leading-[1.1] tracking-[-0.02em] text-text-custom max-[680px]:text-[clamp(1.4rem,5.5vw,2.2rem)] m-0 whitespace-nowrap">
@@ -39,7 +42,7 @@ export default function Hero({ data }) {
           <div className="flex gap-4 flex-wrap">
             <a
               href={data.ctaPrimaryLink}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-lg font-heading text-[0.9rem] font-medium no-underline transition-all duration-200 cursor-pointer border-none bg-accent text-[#fff] hover:opacity-85 hover:-translate-y-[1px]"
+              className="btn-glow inline-flex items-center gap-2 px-6 py-2.5 rounded-lg font-heading text-[0.9rem] font-medium no-underline transition-all duration-200 cursor-pointer border-none bg-accent text-[#fff] hover:opacity-85 hover:-translate-y-[1px]"
             >
               {data.ctaPrimaryText}
             </a>

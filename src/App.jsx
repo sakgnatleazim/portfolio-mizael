@@ -12,6 +12,7 @@ import Footer from './components/Footer'
 import AdminPanel from './components/AdminPanel'
 import AdminLogin from './components/AdminLogin'
 import BackToTop from './components/BackToTop'
+import ScrollProgress from './components/ScrollProgress'
 import { defaultPortfolioData, normalizePortfolioData } from './data/defaultPortfolioData'
 import { supabase } from './supabaseClient'
 import LoadingScreen from './components/LoadingScreen'
@@ -317,6 +318,7 @@ export default function App() {
   return (
     <>
       {showIntro && <LoadingScreen isLoading={loading} onFinished={() => setShowIntro(false)} />}
+      <ScrollProgress />
       <Navbar theme={theme} onToggleTheme={toggleTheme} lang={lang} onToggleLang={toggleLang} />
       <Hero data={translatedHero} />
       <About data={translatedAbout} lang={lang} />

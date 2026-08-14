@@ -8,7 +8,7 @@ export default function Certificates({ data, lang }) {
   return (
     <section id="certificates" className="py-[100px] scroll-mt-[60px]">
       <div className="max-w-[900px] w-full mx-auto px-8">
-        <div className="h-[1px] bg-border-custom mb-16"></div>
+        <div className="section-divider mb-16"></div>
         <div className="fade-in">
           <p className="font-mono text-[0.75rem] text-accent tracking-[0.15em] uppercase mb-2">
             // {lang === 'en' ? 'certificates & achievements' : 'sertifikat & pencapaian'}
@@ -22,7 +22,7 @@ export default function Certificates({ data, lang }) {
           {data.map((cert, index) => (
             <div
               key={index}
-              className="bg-card-bg border border-border-custom rounded-xl p-6 flex flex-col gap-3 transition-all duration-200 hover:border-accent hover:-translate-y-[3px] hover:shadow-custom justify-between"
+              className="card-glow bg-card-bg border border-border-custom rounded-xl p-6 flex flex-col gap-3 transition-all duration-200 hover:border-accent hover:-translate-y-[3px] justify-between"
             >
               <div>
                 <div className="flex justify-between items-start mb-2">

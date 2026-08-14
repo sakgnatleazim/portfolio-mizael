@@ -4,7 +4,7 @@ export default function Organizations({ data, lang }) {
   return (
     <section id="organizations" className="py-[100px] scroll-mt-[60px]">
       <div className="max-w-[900px] w-full mx-auto px-8">
-        <div className="h-[1px] bg-border-custom mb-16"></div>
+        <div className="section-divider mb-16"></div>
         <div className="fade-in">
           <p className="font-mono text-[0.75rem] text-accent tracking-[0.15em] uppercase mb-2">
             // organizations
@@ -17,7 +17,7 @@ export default function Organizations({ data, lang }) {
           {data.map((org, index) => (
             <div
               key={index}
-              className="bg-card-bg border border-border-custom rounded-xl p-[1.25rem_1.5rem] flex items-start gap-5 transition-colors duration-200 hover:border-accent"
+              className="card-glow bg-card-bg border border-border-custom rounded-xl p-[1.25rem_1.5rem] flex items-start gap-5 transition-colors duration-200 hover:border-accent"
             >
               <div className="w-11 h-11 rounded-lg bg-bg3 flex items-center justify-center text-[1.3rem] shrink-0 border border-border-custom">
                 {org.icon}
