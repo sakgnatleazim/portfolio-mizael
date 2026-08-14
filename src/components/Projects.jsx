@@ -1,20 +1,62 @@
+import { useMemo, useState } from 'react'
+
 export default function Projects({ data, lang }) {
+  const [activeFilter, setActiveFilter] = useState('all')
+
+  const categories = useMemo(() => {
+    if (!Array.isArray(data)) return []
+    return Array.from(new Set(data.map((p) => p.type).filter(Boolean)))
+  }, [data])
+
   if (!data) return null
 
+  const filteredData = activeFilter === 'all'
+    ? data
+    : data.filter((project) => project.type === activeFilter)
+
   return (
-    <section id="projects" className="py-[100px] 0">
+    <section id="projects" className="py-[100px] scroll-mt-[60px]">
       <div className="max-w-[900px] w-full mx-auto px-8">
         <div className="h-[1px] bg-border-custom mb-16"></div>
         <div className="fade-in">
           <p className="font-mono text-[0.75rem] text-accent tracking-[0.15em] uppercase mb-2">
             // projects
           </p>
-          <h2 className="font-heading text-[clamp(1.6rem,3vw,2.2rem)] font-bold tracking-[-0.02em] text-text-custom mb-12">
+          <h2 className="font-heading text-[clamp(1.6rem,3vw,2.2rem)] font-bold tracking-[-0.02em] text-text-custom mb-8">
             {lang === 'en' ? 'Projects' : 'Proyek'}
           </h2>
         </div>
+
+        {categories.length > 1 && (
+          <div className="flex flex-wrap gap-2 mb-8 fade-in">
+            <button
+              onClick={() => setActiveFilter('all')}
+              className={`text-[0.78rem] font-mono px-3.5 py-1.5 rounded-full border cursor-pointer transition-colors duration-200 ${
+                activeFilter === 'all'
+                  ? 'bg-accent text-white border-accent'
+                  : 'bg-transparent text-text-muted border-border-custom hover:border-accent hover:text-accent'
+              }`}
+            >
+              {lang === 'en' ? 'All' : 'Semua'}
+            </button>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveFilter(cat)}
+                className={`text-[0.78rem] font-mono px-3.5 py-1.5 rounded-full border cursor-pointer transition-colors duration-200 ${
+                  activeFilter === cat
+                    ? 'bg-accent text-white border-accent'
+                    : 'bg-transparent text-text-muted border-border-custom hover:border-accent hover:text-accent'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        )}
+
         <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-5 fade-in">
-          {data.map((project, index) => {
+          {filteredData.map((project, index) => {
             const projectTags = typeof project.tags === 'string'
               ? project.tags.split(',').map(t => t.trim()).filter(Boolean)
               : Array.isArray(project.tags) ? project.tags : []

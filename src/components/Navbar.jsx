@@ -1,67 +1,75 @@
+import { useEffect, useState } from 'react'
+
+const NAV_ITEMS = [
+  { id: 'about', label_id: 'Tentang', label_en: 'About' },
+  { id: 'skills', label_id: 'Keahlian', label_en: 'Skills' },
+  { id: 'projects', label_id: 'Proyek', label_en: 'Projects' },
+  { id: 'activities', label_id: 'Aktivitas', label_en: 'Activities' },
+  { id: 'organizations', label_id: 'Organisasi', label_en: 'Organizations' },
+  { id: 'certificates', label_id: 'Sertifikat', label_en: 'Certificates' },
+  { id: 'contact', label_id: 'Kontak', label_en: 'Contact' },
+]
+
 export default function Navbar({ theme, onToggleTheme, lang, onToggleLang }) {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [activeId, setActiveId] = useState('')
+
+  // Scroll-spy: highlight the nav link for the section currently in view
+  useEffect(() => {
+    const sections = NAV_ITEMS
+      .map((item) => document.getElementById(item.id))
+      .filter(Boolean)
+
+    if (sections.length === 0) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id)
+          }
+        })
+      },
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+    )
+
+    sections.forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
+  }, [])
+
+  // Lock body scroll while the mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [menuOpen])
+
+  const handleNavClick = () => setMenuOpen(false)
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[100] bg-nav-bg backdrop-blur-[12px] border-b border-border-custom px-8 h-[60px] flex items-center justify-between transition-colors duration-300">
+    <nav className="fixed top-0 left-0 right-0 z-[100] bg-nav-bg backdrop-blur-[12px] border-b border-border-custom px-8 h-[60px] flex items-center justify-between transition-colors duration-300 max-[800px]:px-5">
       <span className="font-mono text-[0.9rem] text-accent tracking-[0.05em]">
         mizaeltangkas
       </span>
+
       <ul className="flex items-center gap-8 list-none max-[800px]:hidden">
-        <li>
-          <a
-            href="#about"
-            className="text-[0.85rem] text-text-muted no-underline font-medium tracking-[0.03em] transition-colors duration-200 relative hover:text-text-custom after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:right-0 after:h-[1px] after:bg-accent after:scale-x-0 after:transition-transform after:duration-200 hover:after:scale-x-100"
-          >
-            {lang === 'en' ? 'About' : 'Tentang'}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#skills"
-            className="text-[0.85rem] text-text-muted no-underline font-medium tracking-[0.03em] transition-colors duration-200 relative hover:text-text-custom after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:right-0 after:h-[1px] after:bg-accent after:scale-x-0 after:transition-transform after:duration-200 hover:after:scale-x-100"
-          >
-            {lang === 'en' ? 'Skills' : 'Keahlian'}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#projects"
-            className="text-[0.85rem] text-text-muted no-underline font-medium tracking-[0.03em] transition-colors duration-200 relative hover:text-text-custom after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:right-0 after:h-[1px] after:bg-accent after:scale-x-0 after:transition-transform after:duration-200 hover:after:scale-x-100"
-          >
-            {lang === 'en' ? 'Projects' : 'Proyek'}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#activities"
-            className="text-[0.85rem] text-text-muted no-underline font-medium tracking-[0.03em] transition-colors duration-200 relative hover:text-text-custom after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:right-0 after:h-[1px] after:bg-accent after:scale-x-0 after:transition-transform after:duration-200 hover:after:scale-x-100"
-          >
-            {lang === 'en' ? 'Activities' : 'Aktivitas'}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#organizations"
-            className="text-[0.85rem] text-text-muted no-underline font-medium tracking-[0.03em] transition-colors duration-200 relative hover:text-text-custom after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:right-0 after:h-[1px] after:bg-accent after:scale-x-0 after:transition-transform after:duration-200 hover:after:scale-x-100"
-          >
-            {lang === 'en' ? 'Organizations' : 'Organisasi'}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#certificates"
-            className="text-[0.85rem] text-text-muted no-underline font-medium tracking-[0.03em] transition-colors duration-200 relative hover:text-text-custom after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:right-0 after:h-[1px] after:bg-accent after:scale-x-0 after:transition-transform after:duration-200 hover:after:scale-x-100"
-          >
-            {lang === 'en' ? 'Certificates' : 'Sertifikat'}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#contact"
-            className="text-[0.85rem] text-text-muted no-underline font-medium tracking-[0.03em] transition-colors duration-200 relative hover:text-text-custom after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:right-0 after:h-[1px] after:bg-accent after:scale-x-0 after:transition-transform after:duration-200 hover:after:scale-x-100"
-          >
-            {lang === 'en' ? 'Contact' : 'Kontak'}
-          </a>
-        </li>
+        {NAV_ITEMS.map((item) => (
+          <li key={item.id}>
+            <a
+              href={`#${item.id}`}
+              className={`text-[0.85rem] no-underline font-medium tracking-[0.03em] transition-colors duration-200 relative after:content-[''] after:absolute after:-bottom-[2px] after:left-0 after:right-0 after:h-[1px] after:bg-accent after:transition-transform after:duration-200 ${
+                activeId === item.id
+                  ? 'text-accent after:scale-x-100'
+                  : 'text-text-muted hover:text-text-custom after:scale-x-0 hover:after:scale-x-100'
+              }`}
+            >
+              {lang === 'en' ? item.label_en : item.label_id}
+            </a>
+          </li>
+        ))}
       </ul>
+
       <div className="flex items-center gap-3">
         <button
           className="bg-transparent border border-border-custom rounded-lg px-2.5 py-1.5 cursor-pointer text-text-muted text-[0.75rem] font-mono font-bold transition-all duration-200 flex items-center hover:border-accent hover:text-accent tracking-wider"
@@ -85,6 +93,47 @@ export default function Navbar({ theme, onToggleTheme, lang, onToggleLang }) {
             </svg>
           )}
         </button>
+
+        {/* Hamburger toggle — only visible on small screens */}
+        <button
+          className="hidden max-[800px]:flex bg-transparent border border-border-custom rounded-lg p-2 cursor-pointer text-text-muted transition-all duration-200 items-center hover:border-accent hover:text-accent"
+          onClick={() => setMenuOpen((prev) => !prev)}
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+        >
+          {menuOpen ? (
+            <svg className="w-4 h-4 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          )}
+        </button>
+      </div>
+
+      {/* Mobile menu overlay */}
+      <div
+        className={`hidden max-[800px]:flex flex-col fixed top-[60px] left-0 right-0 bottom-0 bg-bg z-[99] transition-transform duration-300 ease-out ${
+          menuOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'
+        }`}
+      >
+        <ul className="flex flex-col list-none p-6 gap-1">
+          {NAV_ITEMS.map((item) => (
+            <li key={item.id} className="border-b border-border-custom last:border-none">
+              <a
+                href={`#${item.id}`}
+                onClick={handleNavClick}
+                className={`block py-4 text-[1rem] no-underline font-medium tracking-[0.02em] transition-colors duration-200 ${
+                  activeId === item.id ? 'text-accent' : 'text-text-muted hover:text-text-custom'
+                }`}
+              >
+                {lang === 'en' ? item.label_en : item.label_id}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </nav>
   )

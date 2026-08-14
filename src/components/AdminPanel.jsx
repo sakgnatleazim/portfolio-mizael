@@ -1,9 +1,34 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { supabase } from '../supabaseClient'
 
 export default function AdminPanel({ data, onSave, onReset, onLogout }) {
   const [activeTab, setActiveTab] = useState('hero-about')
   const [formData, setFormData] = useState({ ...data })
   const [adminLang, setAdminLang] = useState('id') // 'id' or 'en' for editing
+  const [messages, setMessages] = useState([])
+  const [messagesLoading, setMessagesLoading] = useState(false)
+
+  const fetchMessages = async () => {
+    if (!supabase) return
+    setMessagesLoading(true)
+    const { data: rows, error } = await supabase
+      .from('messages')
+      .select('*')
+      .order('created_at', { ascending: false })
+    if (!error && rows) setMessages(rows)
+    setMessagesLoading(false)
+  }
+
+  useEffect(() => {
+    fetchMessages()
+  }, [])
+
+  const handleDeleteMessage = async (id) => {
+    if (!supabase) return
+    if (!window.confirm('Hapus pesan ini?')) return
+    await supabase.from('messages').delete().eq('id', id)
+    setMessages((prev) => prev.filter((m) => m.id !== id))
+  }
 
   const handleChange = (section, field, value) => {
     setFormData((prev) => ({
@@ -132,7 +157,8 @@ export default function AdminPanel({ data, onSave, onReset, onLogout }) {
     { id: 'projects', name: 'Projects' },
     { id: 'activities-orgs', name: 'Kegiatan & Organisasi' },
     { id: 'certificates', name: 'Sertifikat & Pencapaian' },
-    { id: 'contact-footer', name: 'Kontak & Footer' }
+    { id: 'contact-footer', name: 'Kontak & Footer' },
+    { id: 'messages', name: `Pesan Masuk${messages.length ? ` (${messages.length})` : ''}` }
   ]
 
   const inputClass = "w-full bg-bg3 border border-border-custom text-text-custom rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-accent"
@@ -987,6 +1013,59 @@ export default function AdminPanel({ data, onSave, onReset, onLogout }) {
                     value={formData.footer[`text_${adminLang}`] || ''}
                     onChange={(e) => handleChange('footer', `text_${adminLang}`, e.target.value)}
                   />
+                </div>
+              </div>
+            )}
+
+            {/* MESSAGES (from contact form) */}
+            {activeTab === 'messages' && (
+              <div>
+                <div className="flex justify-between items-center mb-4 border-b border-border-custom pb-2">
+                  <h3 className="text-base font-heading font-semibold text-accent m-0">Pesan Masuk dari Form Kontak</h3>
+                  <button
+                    onClick={fetchMessages}
+                    className="px-3 py-1.5 border border-border-custom hover:bg-bg3 rounded-lg text-xs font-semibold cursor-pointer transition-colors"
+                  >
+                    ↻ Muat Ulang
+                  </button>
+                </div>
+
+                {!supabase && (
+                  <p className="text-sm text-text-muted">Supabase belum dikonfigurasi, pesan tidak dapat dimuat.</p>
+                )}
+
+                {supabase && messagesLoading && (
+                  <p className="text-sm text-text-muted">Memuat pesan...</p>
+                )}
+
+                {supabase && !messagesLoading && messages.length === 0 && (
+                  <p className="text-sm text-text-muted">Belum ada pesan masuk.</p>
+                )}
+
+                <div className="flex flex-col gap-3">
+                  {messages.map((msg) => (
+                    <div key={msg.id} className="p-4 bg-bg2 border border-border-custom rounded-xl">
+                      <div className="flex justify-between items-start gap-3 mb-2">
+                        <div>
+                          <div className="text-sm font-semibold text-text-custom">{msg.name}</div>
+                          <a href={`mailto:${msg.email}`} className="text-xs text-accent hover:underline">{msg.email}</a>
+                        </div>
+                        <div className="flex items-center gap-3 shrink-0">
+                          <span className="text-[0.7rem] text-text-muted font-mono">
+                            {msg.created_at ? new Date(msg.created_at).toLocaleString('id-ID') : ''}
+                          </span>
+                          <button
+                            onClick={() => handleDeleteMessage(msg.id)}
+                            className="p-1.5 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer border-none bg-transparent"
+                            title="Hapus Pesan"
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      </div>
+                      <p className="text-sm text-text-muted whitespace-pre-wrap">{msg.message}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

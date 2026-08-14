@@ -6,7 +6,7 @@ export default function Certificates({ data, lang }) {
   if (!data || data.length === 0) return null
 
   return (
-    <section id="certificates" className="py-[100px] 0">
+    <section id="certificates" className="py-[100px] scroll-mt-[60px]">
       <div className="max-w-[900px] w-full mx-auto px-8">
         <div className="h-[1px] bg-border-custom mb-16"></div>
         <div className="fade-in">
@@ -93,6 +93,8 @@ export default function Certificates({ data, lang }) {
             <img
               src={selectedImg}
               alt="Sertifikat Dokumen"
+              loading="lazy"
+              decoding="async"
               className="max-w-full max-h-[80vh] object-contain rounded-xl select-none"
             />
           </div>

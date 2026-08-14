@@ -11,6 +11,7 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 import AdminPanel from './components/AdminPanel'
 import AdminLogin from './components/AdminLogin'
+import BackToTop from './components/BackToTop'
 import { defaultPortfolioData, normalizePortfolioData } from './data/defaultPortfolioData'
 import { supabase } from './supabaseClient'
 import LoadingScreen from './components/LoadingScreen'
@@ -326,6 +327,7 @@ export default function App() {
       <Certificates data={translatedCertificates} lang={lang} />
       <Contact data={translatedContact} lang={lang} />
       <Footer data={translatedFooter} />
+      <BackToTop />
     </>
   )
 }

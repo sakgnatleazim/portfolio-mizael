@@ -2,7 +2,7 @@ export default function Activities({ data, lang }) {
   if (!data) return null
 
   return (
-    <section id="activities" className="py-[100px] 0">
+    <section id="activities" className="py-[100px] scroll-mt-[60px]">
       <div className="max-w-[900px] w-full mx-auto px-8">
         <div className="h-[1px] bg-border-custom mb-16"></div>
         <div className="fade-in">
@@ -24,6 +24,8 @@ export default function Activities({ data, lang }) {
                   <img
                     src={act.imgUrl}
                     alt={act.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                   />
                 ) : (

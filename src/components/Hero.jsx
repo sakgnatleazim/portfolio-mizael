@@ -18,6 +18,8 @@ export default function Hero({ data }) {
                 <img
                   src={data.profileImg}
                   alt={data.name}
+                  loading="eager"
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </div>
